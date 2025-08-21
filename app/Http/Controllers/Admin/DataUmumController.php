@@ -12,8 +12,8 @@ class DataUmumController extends Controller
     public function index()
     {
         $data_umums = DataUmum::get()->take(10);
-        // dd($data_umums);
         return view('admin.data_umum.index', compact('data_umums'));
 
     }
+    
 }

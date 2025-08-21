@@ -15,4 +15,11 @@ class DataUmum extends Model
         'is_active' => 'boolean',
         'id' => 'string'
     ];
+
+    public function duDc()
+{
+    return $this->hasMany(\App\Models\DataUmumDocumentCategory::class, 'data_umum_id', 'id');
+}
+
+
 }

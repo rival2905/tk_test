@@ -1,4 +1,5 @@
-@extends('layouts.app') @section('content')
+@extends('layouts.app')
+@section('content')
 <div class="container">
     <div class="card">
         <div class="card-body">
@@ -8,7 +9,7 @@
                         <tr>
                             <th>ID</th>
                             <th>Nama Kegiatan</th>
-                            <th>kontraktor</th>
+                            <th>Kontraktor</th>
                             <th>Konsultan</th>
                             <th>PPK</th>
                             <th style="width: 13%">Aksi</th>
@@ -17,16 +18,19 @@
                     <tbody>
                         @foreach ($data_umums as $data)
                         <tr>
-                            <td>{{$data->id}}</td>
-                            <td class="text-uppercase">{{$data->nm_paket}}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td>{{ $data->id }}</td>
+                            <td class="text-uppercase">{{ $data->nm_paket ?? $data->name }}</td>
+                            <td>{{ $data->kontraktor ?? '-' }}</td>
+                            <td>{{ $data->konsultan ?? '-' }}</td>
+                            <td>{{ $data->ppk ?? '-' }}</td>
                             <td>
                                 <div class="flex space-x-1 space-y-2 justify-center">
-                                    <a href="#" class="btn btn-mat btn-success waves-effect waves-light">
-                                        <i class="bx bx-search-alt-2"></i>
-                                    </a>    
+                                    <a href="{{ route('admin.data-umum.show', $data->id) }}" 
+   class="btn btn-mat btn-success waves-effect waves-light" 
+   title="Detail Data Umum">
+    <i class="bx bx-search-alt-2"></i>
+</a>
+    
                                 </div>
                             </td>
                         </tr>
@@ -40,5 +44,9 @@
 @endsection 
 
 @section('scripts')
-
+<script>
+    $(document).ready(function() {
+        $('#table').DataTable();
+    });
+</script>
 @endsection

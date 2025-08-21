@@ -10,4 +10,10 @@ class DocumentCategory extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function duDc()
+{
+    return $this->hasMany(\App\Models\DataUmumDocumentCategory::class, 'document_category_id');
+}
+
+
 }
