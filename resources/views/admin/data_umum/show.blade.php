@@ -34,7 +34,7 @@
                             <th>No</th>
                             <th>Code</th>
                             <th>Nama</th>
-                            <th>Total File</th>
+                            <th>Total File + Score</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
@@ -44,7 +44,23 @@
                                 <td>{{ $index + 1 }}</td>
                                 <td>{{ $du_dc->documentCategory->code ?? '-' }}</td>
                                 <td>{{ $du_dc->documentCategory->name ?? '-' }}</td>
-                                <td>{{ $du_dc->details ? $du_dc->details->count() : 0 }}</td>
+                                <td>
+                                    @php
+                                        $totalFiles = $du_dc->details->count();
+                                        $avgScore = $du_dc->details->avg('score');
+                                        $badgeClass = 'bg-secondary';
+                                        if ($avgScore >= 80) $badgeClass = 'bg-success';
+                                        elseif ($avgScore >= 60) $badgeClass = 'bg-warning text-dark';
+                                        elseif ($avgScore > 0) $badgeClass = 'bg-danger';
+                                    @endphp
+
+                                    {{ $totalFiles }}
+                                    @if($totalFiles > 0)
+                                        <span class="badge {{ $badgeClass }} ms-1">
+                                            {{ number_format($avgScore, 2) }}
+                                        </span>
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="d-flex gap-1">
                                         <a href="{{ route('admin.du-dc.index', $du_dc->id) }}" class="btn btn-sm btn-info">Detail</a>
@@ -58,7 +74,7 @@
                                 </td>
                             </tr>
 
-                            {{-- Modal Edit per Relasi --}}
+                            {{-- Modal Edit --}}
                             <div class="modal fade" id="editRelasiModal{{ $du_dc->id }}" tabindex="-1" aria-labelledby="editRelasiLabel{{ $du_dc->id }}" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
@@ -79,10 +95,6 @@
                                                             </option>
                                                         @endforeach
                                                     </select>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label>Score</label>
-                                                    <input type="number" name="score" class="form-control" value="{{ $du_dc->score }}">
                                                 </div>
                                                 <div class="mb-3">
                                                     <label>Deskripsi</label>
@@ -122,10 +134,10 @@
         </div>
         <div class="card-body">
             <table class="table table-borderless">
-            <tr>
-                <th>ID:</th>
-                <td>{{ $data_umum->id ?? '-' }}</td>
-            </tr>
+                <tr>
+                    <th>ID:</th>
+                    <td>{{ $data_umum->id ?? '-' }}</td>
+                </tr>
                 <tr>
                     <th>Nama Kegiatan:</th>
                     <td>{{ $data_umum->nm_paket ?? '-' }}</td>
